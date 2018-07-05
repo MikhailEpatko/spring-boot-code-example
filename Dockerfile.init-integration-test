@@ -1,0 +1,7 @@
+FROM example-host.ru:88889/project_name/microservice_int_base:latest
+
+ADD . /app
+WORKDIR /app
+
+ENTRYPOINT []
+CMD ["/app/compose-init-integration-test.sh"]

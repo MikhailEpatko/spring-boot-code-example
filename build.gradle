@@ -1,0 +1,82 @@
+buildscript {
+	ext {
+		springBootVersion = '2.0.0.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+		jcenter()
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
+	dependencies {
+		classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2")
+		classpath "org.jfrog.buildinfo:build-info-extractor-gradle:latest.release"
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: "jacoco"
+apply plugin: "org.sonarqube"
+apply plugin: "com.jfrog.artifactory"
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'ru.emi'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+jar{
+	archiveName = "${baseName}"
+}
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-actuator')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile group: 'org.tarantool', name: 'connector', version: '1.7.5'
+	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.2'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+	compileOnly('org.projectlombok:lombok')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+sonarqube {
+	properties {
+		property "sonar.projectName", projects.project.name
+		property "sonar.projectKey", "org.sonarqube:java-gradle-simple"
+		property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
+	}
+}
+
+artifactory {
+	contextUrl = "${artifactory_contextUrl}"
+	publish {
+		repository {
+			repoKey = 'gradle-dev-local'
+			username = "${artifactory_user}"
+			password = "${artifactory_password}"
+			maven = true
+
+		}
+	}
+	resolve {
+		repository {
+			repoKey = 'gradle-release'
+			username = "${artifactory_user}"
+			password = "${artifactory_password}"
+			maven = true
+
+		}
+		repository {
+			repoKey = 'gradle-dev'
+			maven = true
+		}
+	}
+}

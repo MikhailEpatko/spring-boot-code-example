@@ -1,0 +1,9 @@
+version: '3'
+services:
+  init-integration-test:
+    build:
+      context: .
+      dockerfile: Dockerfile.init-integration-test
+    depends_on:
+    volumes:
+      - /cache/.m2/repository:/cache/.m2/repository

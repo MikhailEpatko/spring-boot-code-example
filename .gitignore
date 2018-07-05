@@ -1,0 +1,32 @@
+.gradle
+out/*
+/build/
+!gradle/wrapper/gradle-wrapper.jar/home/mikhail/IdeaProjects/widget-action/.gitlab-ci.yml
+*.gz
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+### Tarantool ###
+*.log*
+*.snap
+*.xlog
